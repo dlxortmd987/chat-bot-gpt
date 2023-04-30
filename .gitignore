@@ -39,3 +39,4 @@ out/
 /gradlew.bat
 /gradlew
 /gradle/
+/src/main/resources/application.yml
