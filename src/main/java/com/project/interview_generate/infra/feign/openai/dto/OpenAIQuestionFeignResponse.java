@@ -2,23 +2,18 @@ package com.project.interview_generate.infra.feign.openai.dto;
 
 import java.util.List;
 
-public record OpenAIQuestionResponse(
+public record OpenAIQuestionFeignResponse(
 	List<ResponseMessage> choices
 ) {
-	public List<String> getQueries() {
+	public String getQueries() {
 		return choices.get(0)
 			.message()
-			.getQueries();
+			.content();
 	}
 
 	public record ResponseMessageContent(
 		String content
 	) {
-
-		private List<String> getQueries() {
-			return List.of(content.split("\n"));
-		}
-
 	}
 
 	public record ResponseMessage(

@@ -6,33 +6,34 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 
+import com.project.interview_generate.domain.question.model.Category;
 import com.project.interview_generate.infra.feign.config.FeignTest;
+import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionFeignResponse;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionRequest;
-import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionResponse;
 
+@ImportAutoConfiguration(OpenAIHeaderConfig.class)
 @FeignTest
-class OpenAIQuestionGeneratorTest {
+class OpenAIClientTest {
 
-	private final Logger log = LoggerFactory.getLogger(OpenAIQuestionGeneratorTest.class);
+	private final Logger log = LoggerFactory.getLogger(OpenAIClientTest.class);
 
 	@Autowired
-	private OpenAIQuestionGenerator questionGenerator;
+	private OpenAIClient questionGenerator;
 
 	@DisplayName("Open AI 를 통해 질문을 생성할 수 있다.")
 	@Test
 	void question() {
 		// given
-		OpenAIQuestionRequest request = new OpenAIQuestionRequest("DB 관련 개발자 면접 질문 3개 알려줘.");
+		OpenAIQuestionRequest request = OpenAIQuestionRequest.fromCategory(Category.DB);
 
 		// when
-		OpenAIQuestionResponse actual = questionGenerator.question(request);
+		OpenAIQuestionFeignResponse actual = questionGenerator.call(request);
 
 		// then
 		Assertions.assertThat(actual)
 			.isNotNull();
-		Assertions.assertThat(actual.getQueries().size())
-			.isEqualTo(3);
 		log.info("result: {}", actual);
 	}
 }
