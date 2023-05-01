@@ -1,19 +1,25 @@
 package com.project.interview_generate.infra.feign.openai;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Component;
 
+import com.project.interview_generate.domain.question.dto.GeneratedQuestionResponses;
+import com.project.interview_generate.domain.question.model.Category;
 import com.project.interview_generate.domain.question.service.QuestionGenerator;
-import com.project.interview_generate.infra.feign.HeaderConfig;
+import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionFeignResponse;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionRequest;
-import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionResponse;
 
-@FeignClient(name = "OpenAIQuestion", url = "${openai.url}", configuration = HeaderConfig.class)
-public interface OpenAIQuestionGenerator extends QuestionGenerator {
+@Component
+public class OpenAIQuestionGenerator implements QuestionGenerator {
 
-	@PostMapping
-	OpenAIQuestionResponse question(
-		@RequestBody OpenAIQuestionRequest request
-	);
+	private final OpenAIClient openAIClient;
+
+	public OpenAIQuestionGenerator(OpenAIClient openAIClient) {
+		this.openAIClient = openAIClient;
+	}
+
+	@Override
+	public GeneratedQuestionResponses generate(Category category) {
+		OpenAIQuestionFeignResponse feignResponse = openAIClient.call(OpenAIQuestionRequest.fromCategory(category));
+		return new GeneratedQuestionResponses(feignResponse.getQueries());
+	}
 }
