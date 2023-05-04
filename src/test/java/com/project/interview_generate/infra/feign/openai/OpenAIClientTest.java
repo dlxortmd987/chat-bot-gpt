@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 
-import com.project.interview_generate.domain.question.model.Category;
 import com.project.interview_generate.infra.feign.config.FeignTest;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionFeignResponse;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionRequest;
@@ -24,9 +23,9 @@ class OpenAIClientTest {
 
 	@DisplayName("Open AI 를 통해 질문을 생성할 수 있다.")
 	@Test
-	void question() {
+	void call() {
 		// given
-		OpenAIQuestionRequest request = OpenAIQuestionRequest.fromCategory(Category.DB);
+		OpenAIQuestionRequest request = OpenAIQuestionRequest.newInstance();
 
 		// when
 		OpenAIQuestionFeignResponse actual = questionGenerator.call(request);
