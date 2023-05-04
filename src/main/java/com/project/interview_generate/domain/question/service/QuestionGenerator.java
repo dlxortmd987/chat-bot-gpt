@@ -1,9 +1,10 @@
 package com.project.interview_generate.domain.question.service;
 
-import com.project.interview_generate.domain.question.dto.GeneratedQuestionResponses;
-import com.project.interview_generate.domain.question.model.Category;
+import java.util.List;
+
+import com.project.interview_generate.domain.question.dto.ExtractedKeywordResponse;
 
 public interface QuestionGenerator {
 
-	GeneratedQuestionResponses generate(Category category);
+	List<ExtractedKeywordResponse> generate();
 }

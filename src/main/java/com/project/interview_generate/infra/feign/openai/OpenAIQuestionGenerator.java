@@ -1,9 +1,12 @@
 package com.project.interview_generate.infra.feign.openai;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
-import com.project.interview_generate.domain.question.dto.GeneratedQuestionResponses;
-import com.project.interview_generate.domain.question.model.Category;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.interview_generate.domain.question.dto.ExtractedKeywordResponse;
 import com.project.interview_generate.domain.question.service.QuestionGenerator;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionFeignResponse;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionRequest;
@@ -12,14 +15,21 @@ import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionReque
 public class OpenAIQuestionGenerator implements QuestionGenerator {
 
 	private final OpenAIClient openAIClient;
+	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	public OpenAIQuestionGenerator(OpenAIClient openAIClient) {
 		this.openAIClient = openAIClient;
 	}
 
 	@Override
-	public GeneratedQuestionResponses generate(Category category) {
-		OpenAIQuestionFeignResponse feignResponse = openAIClient.call(OpenAIQuestionRequest.fromCategory(category));
-		return new GeneratedQuestionResponses(feignResponse.getQueries());
+	public List<ExtractedKeywordResponse> generate() {
+		OpenAIQuestionFeignResponse feignResponse = openAIClient.call(OpenAIQuestionRequest.newInstance());
+
+		try {
+			return objectMapper.readValue(feignResponse.getContent(), new TypeReference<>() {
+			});
+		} catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 }
