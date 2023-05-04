@@ -1,6 +1,5 @@
 package com.project.interview_generate.infra.feign.openai;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -10,11 +9,10 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 
 import com.project.interview_generate.domain.question.dto.GeneratedQuestion;
+import com.project.interview_generate.domain.question.model.Category;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionFeignResponse;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionRequest;
 
@@ -22,9 +20,7 @@ import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionReque
 @ImportAutoConfiguration(OpenAIQuestionGenerator.class)
 class OpenAIQuestionGeneratorTest {
 
-	private final Logger log = LoggerFactory.getLogger(OpenAIQuestionGeneratorTest.class);
-
-	private static OpenAIQuestionFeignResponse feignResponse = getResponse();
+	private static final OpenAIQuestionFeignResponse FEIGN_RESPONSE = getResponse();
 
 	@Mock
 	private OpenAIClient openAIClient;
@@ -36,23 +32,15 @@ class OpenAIQuestionGeneratorTest {
 		String mockContent = """
 			[
 			  {
-			    \"category\": \"DB\",
-			    \"questions\": [
-			      {
-			        \"question\": \"데이터베이스 성능 최적화를 위해 어떤 방법이 있나요?\",
-			        \"keywords\": [\"성능\", \"최적화\"]
-			      }
-			    ]
-			  },
-			  {
-			    \"category\": \"NETWORK\",
-			    \"questions\": [
-			      {
-			        \"question\": \"TCP와 UDP의 차이점은 무엇인가요?\",
-			        \"keywords\": [\"TCP\", \"UDP\"]
-			      }
-			    ]
-			  }
+			       "category": "DB",
+			       "query": "DB 정규화란?",
+			       "keywords": ["정규화", "데이터베이스"]
+			     },
+			     {
+			       "category": "NETWORK",
+			       "query": "HTTP와 HTTPS 차이점은?",
+			       "keywords": ["HTTP", "HTTPS", "네트워크"]
+			     }
 			]
 			""";
 		OpenAIQuestionFeignResponse.Content content = new OpenAIQuestionFeignResponse.Content(mockContent);
@@ -60,20 +48,20 @@ class OpenAIQuestionGeneratorTest {
 	}
 
 	@Test
-	void generate() throws IOException {
+	void generate() {
 		// given
 		BDDMockito.when(openAIClient.call(OpenAIQuestionRequest.newInstance()))
-			.thenReturn(feignResponse);
+			.thenReturn(FEIGN_RESPONSE);
 
 		List<GeneratedQuestion> expect = List.of(
-			new GeneratedQuestion("DB",
-				List.of(
-					new GeneratedQuestion.QuestionKeywordResponse("데이터베이스 성능 최적화를 위해 어떤 방법이 있나요?",
-						List.of("성능", "최적화")))),
-			new GeneratedQuestion("NETWORK",
-				List.of(
-					new GeneratedQuestion.QuestionKeywordResponse("TCP와 UDP의 차이점은 무엇인가요?",
-						List.of("TCP", "UDP")))));
+			new GeneratedQuestion(
+				Category.DB,
+				"DB 정규화란?",
+				List.of("정규화", "데이터베이스")),
+			new GeneratedQuestion(
+				Category.NETWORK,
+				"HTTP와 HTTPS 차이점은?",
+				List.of("HTTP", "HTTPS", "네트워크")));
 
 		// when
 		List<GeneratedQuestion> actual = questionGenerator.generate();

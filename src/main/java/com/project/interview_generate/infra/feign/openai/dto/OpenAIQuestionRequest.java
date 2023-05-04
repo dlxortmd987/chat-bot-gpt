@@ -12,27 +12,23 @@ public record OpenAIQuestionRequest(
 
 	private static final String QUESTION_MODEL = "gpt-3.5-turbo";
 	private static final String DEFAULT_JSON_FORM = """
-			[ 
-				\"Category\": \"Category Name\", 
-				\"Questions\": 
-				[
-					{
-						\"Question\": \"질문1\", 
-						\"Keywords\": 
-						[
-							"키워드1",
-							"키워드2",
-						]
-					}, 
-					{
-						\"Question\": \"질문2\", 
-						\"Keywords\": 
-						[
-							"키워드1",
-							"키워드2",
-						]
-					}, 
-				]
+			[
+				{
+					"category": "카테고리",
+					"query": "질문1",
+					"keywords": [
+						"키워드1",
+						"키워드2",
+					]
+				},
+				{
+					"category": "카테고리",
+					"query": "질문2",
+					"keywords": [
+						"키워드1",
+						"키워드2",
+					]
+				}
 			]
 		""".lines().collect(Collectors.joining()).replace("\t", "");
 

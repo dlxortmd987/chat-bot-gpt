@@ -2,13 +2,11 @@ package com.project.interview_generate.domain.question.dto;
 
 import java.util.List;
 
+import com.project.interview_generate.domain.question.model.Category;
+
 public record GeneratedQuestion(
-	String category,
-	List<QuestionKeywordResponse> questions
+	Category category,
+	String query,
+	List<String> keywords
 ) {
-	public record QuestionKeywordResponse(
-		String question,
-		List<String> keywords
-	) {
-	}
 }
