@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.interview_generate.domain.question.dto.ExtractedKeywordResponse;
+import com.project.interview_generate.domain.question.dto.GeneratedQuestion;
 import com.project.interview_generate.domain.question.service.QuestionGenerator;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionFeignResponse;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionRequest;
@@ -22,7 +22,7 @@ public class OpenAIQuestionGenerator implements QuestionGenerator {
 	}
 
 	@Override
-	public List<ExtractedKeywordResponse> generate() {
+	public List<GeneratedQuestion> generate() {
 		OpenAIQuestionFeignResponse feignResponse = openAIClient.call(OpenAIQuestionRequest.newInstance());
 
 		try {

@@ -2,7 +2,7 @@ package com.project.interview_generate.domain.question.dto;
 
 import java.util.List;
 
-public record ExtractedKeywordResponse(
+public record GeneratedQuestion(
 	String category,
 	List<QuestionKeywordResponse> questions
 ) {

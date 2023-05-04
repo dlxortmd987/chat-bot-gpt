@@ -2,9 +2,9 @@ package com.project.interview_generate.domain.question.service;
 
 import java.util.List;
 
-import com.project.interview_generate.domain.question.dto.ExtractedKeywordResponse;
+import com.project.interview_generate.domain.question.dto.GeneratedQuestion;
 
 public interface QuestionGenerator {
 
-	List<ExtractedKeywordResponse> generate();
+	List<GeneratedQuestion> generate();
 }

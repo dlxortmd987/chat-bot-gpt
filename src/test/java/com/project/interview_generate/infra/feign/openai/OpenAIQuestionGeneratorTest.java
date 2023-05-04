@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 
-import com.project.interview_generate.domain.question.dto.ExtractedKeywordResponse;
+import com.project.interview_generate.domain.question.dto.GeneratedQuestion;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionFeignResponse;
 import com.project.interview_generate.infra.feign.openai.dto.OpenAIQuestionRequest;
 
@@ -65,18 +65,18 @@ class OpenAIQuestionGeneratorTest {
 		BDDMockito.when(openAIClient.call(OpenAIQuestionRequest.newInstance()))
 			.thenReturn(feignResponse);
 
-		List<ExtractedKeywordResponse> expect = List.of(
-			new ExtractedKeywordResponse("DB",
+		List<GeneratedQuestion> expect = List.of(
+			new GeneratedQuestion("DB",
 				List.of(
-					new ExtractedKeywordResponse.QuestionKeywordResponse("데이터베이스 성능 최적화를 위해 어떤 방법이 있나요?",
+					new GeneratedQuestion.QuestionKeywordResponse("데이터베이스 성능 최적화를 위해 어떤 방법이 있나요?",
 						List.of("성능", "최적화")))),
-			new ExtractedKeywordResponse("NETWORK",
+			new GeneratedQuestion("NETWORK",
 				List.of(
-					new ExtractedKeywordResponse.QuestionKeywordResponse("TCP와 UDP의 차이점은 무엇인가요?",
+					new GeneratedQuestion.QuestionKeywordResponse("TCP와 UDP의 차이점은 무엇인가요?",
 						List.of("TCP", "UDP")))));
 
 		// when
-		List<ExtractedKeywordResponse> actual = questionGenerator.generate();
+		List<GeneratedQuestion> actual = questionGenerator.generate();
 
 		// then
 		Assertions.assertThat(actual)
