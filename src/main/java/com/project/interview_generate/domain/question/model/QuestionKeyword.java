@@ -25,4 +25,21 @@ public class QuestionKeyword {
 
 	protected QuestionKeyword() {
 	}
+
+	public QuestionKeyword(Question question, Keyword keyword) {
+		this.question = question;
+		this.keyword = keyword;
+	}
+
+	public Long id() {
+		return id;
+	}
+
+	public Question question() {
+		return question;
+	}
+
+	public Keyword keyword() {
+		return keyword;
+	}
 }
