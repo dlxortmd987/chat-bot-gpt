@@ -1,7 +1,11 @@
 package com.project.interview_generate.domain.member.model;
 
+import com.project.interview_generate.domain.question.model.Category;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,8 +21,21 @@ public class Member {
 	private String email;
 
 	@Column(nullable = false)
-	private String sendTime;
+	@Enumerated(EnumType.STRING)
+	private Category category;
 
 	protected Member() {
+	}
+
+	public Long id() {
+		return id;
+	}
+
+	public String email() {
+		return email;
+	}
+
+	public Category category() {
+		return category;
 	}
 }
