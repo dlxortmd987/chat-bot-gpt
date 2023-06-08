@@ -1,6 +1,7 @@
 package com.project.interview_generate.infra.feign.openai;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ class OpenAIClientTest {
 	@Autowired
 	private OpenAIClient questionGenerator;
 
+	@Disabled
 	@DisplayName("Open AI 를 통해 질문을 생성할 수 있다.")
 	@Test
 	void call() {
