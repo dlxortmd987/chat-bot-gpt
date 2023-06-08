@@ -15,7 +15,7 @@ public record RandomQuestionByMember(
 		List<String> queries = questions.stream()
 			.map(Question::query)
 			.toList();
-		return new RandomQuestionByMember(member.category(), member.email(), queries);
+		return new RandomQuestionByMember(member.category(), member.email().value(), queries);
 	}
 
 	public String concatQuestions() {

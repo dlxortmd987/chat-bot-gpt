@@ -17,7 +17,9 @@ public class OpenAIQuestionGenerator implements QuestionGenerator {
 	private final OpenAIClient openAIClient;
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	public OpenAIQuestionGenerator(OpenAIClient openAIClient) {
+	public OpenAIQuestionGenerator(
+		OpenAIClient openAIClient
+	) {
 		this.openAIClient = openAIClient;
 	}
 

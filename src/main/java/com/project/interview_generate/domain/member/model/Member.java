@@ -1,8 +1,10 @@
 package com.project.interview_generate.domain.member.model;
 
 import com.project.interview_generate.domain.question.model.Category;
+import com.project.interview_generate.domain.type.model.Email;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,8 +19,8 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(unique = true, nullable = false)
-	private String email;
+	@Embedded
+	private Email email;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -27,11 +29,16 @@ public class Member {
 	protected Member() {
 	}
 
+	public Member(Email email, Category category) {
+		this.email = email;
+		this.category = category;
+	}
+
 	public Long id() {
 		return id;
 	}
 
-	public String email() {
+	public Email email() {
 		return email;
 	}
 
