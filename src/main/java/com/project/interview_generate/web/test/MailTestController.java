@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,22 +21,22 @@ public class MailTestController {
 		this.mailSendService = mailSendService;
 	}
 
-	// @PostMapping
-	// public void send() {
-	// 	mailSendService.send();
-	// }
+	@PostMapping
+	public void send() {
+		mailSendService.send();
+	}
 
 	@GetMapping
 	public ResponseEntity<String> test() {
 		return ResponseEntity.ok("Call success!!");
 	}
 
-	@PostMapping
-	public ResponseEntity<String> testPost(@RequestBody TestUserData userData) throws InterruptedException {
-		System.out.println("userData = " + userData);
-		Thread.sleep(3000L);
-		return ResponseEntity.ok("Call success!!");
-	}
+	// @PostMapping
+	// public ResponseEntity<String> testPost(@RequestBody TestUserData userData) throws InterruptedException {
+	// 	System.out.println("userData = " + userData);
+	// 	Thread.sleep(3000L);
+	// 	return ResponseEntity.ok("Call success!!");
+	// }
 
 	record TestUserData(String email, Category category) {
 

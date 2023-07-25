@@ -11,6 +11,10 @@ public record RandomQuestionByMember(
 	String email,
 	List<String> questions
 ) {
+
+	private static final String TWO_LINE_SEPARATOR = System.lineSeparator() + System.lineSeparator();
+	private static final String MESSAGE_HEAD = "오늘의 질문입니다.%sCategory: %s";
+
 	public static RandomQuestionByMember from(Member member, List<Question> questions) {
 		List<String> queries = questions.stream()
 			.map(Question::query)
@@ -19,6 +23,8 @@ public record RandomQuestionByMember(
 	}
 
 	public String concatQuestions() {
-		return String.join("\n\n", questions);
+		return MESSAGE_HEAD.formatted(TWO_LINE_SEPARATOR, category)
+			+ TWO_LINE_SEPARATOR
+			+ String.join(TWO_LINE_SEPARATOR, questions);
 	}
 }
